@@ -42,7 +42,7 @@
     "vmStorageAccountContainerName": "vhds",
     "imagePublisher": "SoftNAS",
     "imageOffer": "SoftNAS Cloud - BYOL",
-    "imageSKU": "3.4.5",
+    "imageSKU": "SoftNAS Cloud - BYOL",
     "imageVersion": "latest",
     "publicIPAddressName": "myPublicIP",
     "publicIPAddressType": "Dynamic",
