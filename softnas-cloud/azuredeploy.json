@@ -20,12 +20,6 @@
         "description": "Password for the Virtual Machine."
       }
     },
-    "vmSize": {
-      "type": "string",
-      "metadata": {
-        "description": "Size of VM"
-      }
-    },
     "sizeOfEachDataDiskInGB": {
       "type": "string",
       "metadata": {
@@ -34,6 +28,7 @@
     }
   },
   "variables": {
+    "vmSize": "Standard_D2",
     "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'saddiskvm')]",
     "location": "[resourceGroup().location]",
     "addressPrefix": "10.0.0.0/16",
@@ -41,7 +36,6 @@
     "subnet1Prefix": "10.0.0.0/24",
     "vmStorageAccountContainerName": "vhds",
     "imagePublisher": "SoftNAS",
-    "imageOffer": "SoftNAS Cloud - BYOL",
     "imageSKU": "SoftNAS Cloud - BYOL",
     "imageVersion": "latest",
     "publicIPAddressName": "myPublicIP",
@@ -136,7 +130,7 @@
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "[parameters('vmSize')]"
+          "vmSize": "[variables('vmSize')]"
         },
         "osProfile": {
           "computerName": "[variables('vmName')]",
