@@ -140,7 +140,6 @@
         "storageProfile": {
           "imageReference": {
             "publisher": "[variables('imagePublisher')]",
-            "offer": "[variables('imageOffer')]",
             "sku": "[variables('imageSKU')]",
             "version": "[variables('imageVersion')]"
           },
