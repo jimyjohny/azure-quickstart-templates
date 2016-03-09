@@ -8,6 +8,12 @@
         "description": "Unique DNS Name for the Storage Account where the Virtual Machine's disks will be placed."
       }
     },
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "Username for the Virtual Machine."
+      }
+    },
     "adminPassword": {
       "type": "securestring",
       "metadata": {
@@ -28,7 +34,6 @@
     }
   },
   "variables": {
-    "adminUsername" : "softnas",
     "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'saddiskvm')]",
     "location": "[resourceGroup().location]",
     "addressPrefix": "10.0.0.0/16",
