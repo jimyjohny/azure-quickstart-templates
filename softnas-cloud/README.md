@@ -7,9 +7,6 @@
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
 
-This template allows you to create a Windows Virtual Machine from a specified image during the template deployment and install the VM Diagnostics Extension. It also attaches 4 empty data disks. Note that you can specify the size of each of the empty data disks. This template also deploys a Storage Account, Virtual Network, Public IP addresses and a Network Interface.
+This template allows you to create a SoftNAS Cloud Virtual Machine from a specified image. It also attaches one empty data disk. This template also deploys a Storage Account, Virtual Network, Public IP addresses and a Network Interface.
 
-NOTE: The configuration of the VM diagnostics extension relies on a Base64 encoded string for the xmlConfig. This configures a basic set of counters, including CPU and Memory. 
-
-
-Before you can use a marketplace image from an API, you must enable the image for programmatic use. In the Azure portal, find the marketplace image that you want to use and then click Want to deploy programmatically, Get Started ->. Enter any required information and then click Save.
+NOTE: Before you can use a marketplace image from an API, you must enable the image for programmatic use. In the Azure portal, find the marketplace image (Softnas BYOL ) that you want to use and then click Want to deploy programmatically, Get Started ->. Enter any required information and then click Save.
