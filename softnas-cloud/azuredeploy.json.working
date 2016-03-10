@@ -2,6 +2,12 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "User name for the Virtual Machine."
+      }
+    },
     "adminPassword": {
       "type": "securestring",
       "metadata": {
@@ -11,7 +17,6 @@
   },
   "variables": {
     "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'rhelvm')]",
-    "adminUsername": "softnas",
     "location": "[resourceGroup().location]",
     "dataDisk1VhdName": "datadisk1",
     "imagePublisher": "softnas",
@@ -120,7 +125,7 @@
         },
         "osProfile": {
           "computerName": "[variables('vmName')]",
-          "adminUsername": "[variables('adminUsername')]",
+          "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
         "storageProfile": {
@@ -141,7 +146,7 @@
           "dataDisks": [
             {
               "name": "datadisk1",
-              "diskSizeGB": "5",
+              "diskSizeGB": "10",
               "lun": 0,
               "vhd": {
                 "uri": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('dataDisk1VhdName'),'.vhd')]"
@@ -162,29 +167,6 @@
              "enabled": "true",
              "storageUri": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net')]"
           }
-        }
-      }
-    }
-    {
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(variables('vmName'),'/newuserscript')]",
-      "apiVersion": "[variables('apiVersion')]",
-      "location": "[parameters('location')]",
-      "dependsOn": [
-        "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'))]"
-      ],
-      "properties": {
-        "publisher": "Microsoft.OSTCExtensions",
-        "type": "CustomScriptForLinux",
-        "typeHandlerVersion": "1.4",
-        "autoUpgradeMinorVersion": true,
-        "settings": {
-          "fileUris": [
-            "https://raw.githubusercontent.com/jimyjohny/azure-quickstart-templates/master/softnas-cloud/softnas_configure_pool.sh"
-          ]
-        },
-        "protectedSettings": {
-          "commandToExecute": "[concat('sh install_lamp.sh ', parameters('mySqlPassword'))]"
         }
       }
     }
