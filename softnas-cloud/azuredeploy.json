@@ -184,7 +184,7 @@
           ]
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('sh softnas_configure_pool.sh', parameters('adminPassword'))]"
+          "commandToExecute": "[concat('sh softnas_configure_pool.sh ', parameters('adminPassword'))]"
         }
       }
     }
