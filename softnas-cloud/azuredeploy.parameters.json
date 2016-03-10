@@ -3,16 +3,10 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "adminUsername": {
-      "value": "softnas"
+      "value": "GEN-USER"
     },
     "adminPassword": {
       "value": "GEN-PASSWORD"
-    },
-    "dnsLabelPrefix": {
-      "value": "GEN-UNIQUE"
-    },
-    "sizeOfEachDataDiskInGB": {
-      "value": "5"
     }
   }
 }

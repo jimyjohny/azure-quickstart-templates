@@ -2,16 +2,10 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "dnsLabelPrefix": {
-      "type": "string",
-      "metadata": {
-        "description": "Unique DNS Name for the Storage Account where the Virtual Machine's disks will be placed."
-      }
-    },
     "adminUsername": {
       "type": "string",
       "metadata": {
-        "description": "Username for the Virtual Machine."
+        "description": "User name for the Virtual Machine."
       }
     },
     "adminPassword": {
@@ -19,35 +13,28 @@
       "metadata": {
         "description": "Password for the Virtual Machine."
       }
-    },
-    "sizeOfEachDataDiskInGB": {
-      "type": "string",
-      "metadata": {
-        "description": "Size of each data disk in GB"
-      }
     }
   },
   "variables": {
-    "vmSize": "Standard_D2",
-    "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'saddiskvm')]",
+    "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'rhelvm')]",
     "location": "[resourceGroup().location]",
-    "addressPrefix": "10.0.0.0/16",
-    "subnet1Name": "Subnet-1",
-    "subnet1Prefix": "10.0.0.0/24",
-    "vmStorageAccountContainerName": "vhds",
+    "dataDisk1VhdName": "datadisk1",
     "imagePublisher": "SoftNAS",
-    "imageSKU": "SoftNAS Cloud - BYOL",
-    "imageVersion": "latest",
+    "imageOffer": "STANDARD_BYOL",
+    "OSDiskName": "osdiskforsoftnas",
+    "nicName": "myVMNic",
+    "addressPrefix": "10.0.0.0/16",
+    "subnetName": "Subnet",
+    "subnetPrefix": "10.0.0.0/24",
+    "storageAccountType": "Standard_LRS",
     "publicIPAddressName": "myPublicIP",
     "publicIPAddressType": "Dynamic",
-    "storageAccountType": "Standard_LRS",
-    "virtualNetworkName": "myVNET",
-    "vmName": "SoftNAS",
+    "vmStorageAccountContainerName": "vhds",
+    "vmName": "MyRHELVM",
+    "vmSize": "Standard_D1",
+    "virtualNetworkName": "MyVNET",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
-    "nicName": "myNIC",
-    "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]",
-    "dataDisk1VhdName": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('vmName'),'dataDisk1.vhd')]",
-    "dataDisk2VhdName": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('vmName'),'dataDisk2.vhd')]",
+    "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
     "apiVersion": "2015-06-15"
   },
   "resources": [
@@ -66,10 +53,7 @@
       "name": "[variables('publicIPAddressName')]",
       "location": "[variables('location')]",
       "properties": {
-        "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
-        "dnsSettings": {
-          "domainNameLabel": "[parameters('dnsLabelPrefix')]"
-        }
+        "publicIPAllocationMethod": "[variables('publicIPAddressType')]"
       }
     },
     {
@@ -85,9 +69,9 @@
         },
         "subnets": [
           {
-            "name": "[variables('subnet1Name')]",
+            "name": "[variables('subnetName')]",
             "properties": {
-              "addressPrefix": "[variables('subnet1Prefix')]"
+              "addressPrefix": "[variables('subnetPrefix')]"
             }
           }
         ]
@@ -112,7 +96,7 @@
                 "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
               },
               "subnet": {
-                "id": "[variables('subnet1Ref')]"
+                "id": "[variables('subnetRef')]"
               }
             }
           }
@@ -120,7 +104,7 @@
       }
     },
     {
-      "apiVersion": "2015-06-15",
+      "apiVersion": "[variables('apiVersion')]",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[variables('vmName')]",
       "location": "[variables('location')]",
@@ -140,37 +124,29 @@
         "storageProfile": {
           "imageReference": {
             "publisher": "[variables('imagePublisher')]",
-            "sku": "[variables('imageSKU')]",
-            "version": "[variables('imageVersion')]"
+            "offer": "[variables('imageOffer')]",
+            "sku": "[variables('imageOffer')]",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "osdisk",
+            "vhd": {
+              "uri": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'),'.vhd')]"
+            },
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
           },
           "dataDisks": [
             {
               "name": "datadisk1",
-              "diskSizeGB": "[parameters('sizeOfEachDataDiskInGB')]",
+              "diskSizeGB": "10",
               "lun": 0,
               "vhd": {
-                "Uri": "[variables('dataDisk1VhdName')]"
+                "uri": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('dataDisk1VhdName'),'.vhd')]"
               },
               "createOption": "Empty"
-            },
-            {
-              "name": "datadisk2",
-              "diskSizeGB": "[parameters('sizeOfEachDataDiskInGB')]",
-              "lun": 1,
-              "vhd": {
-                "Uri": "[variables('dataDisk2VhdName')]"
-              },
-              "createOption": "Empty"
-            },
-          ],
-          "osDisk": {
-            "name": "osdisk1",
-            "vhd": {
-              "uri": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/','osdisk1.vhd')]"
-            },
-            "caching": "ReadWrite",
-            "createOption": "FromImage"
-          }
+            }
+          ]
         },
         "networkProfile": {
           "networkInterfaces": [
@@ -189,4 +165,3 @@
     }
   ]
 }
-
