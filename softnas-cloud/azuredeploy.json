@@ -8,17 +8,27 @@
         "description": "Unique DNS Name for the Storage Account where the Virtual Machine's disks will be placed."
       }
     },
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "Username for the Virtual Machine."
+      }
+    },
     "adminPassword": {
       "type": "securestring",
       "metadata": {
         "description": "Password for the Virtual Machine."
       }
+    },
+    "sizeOfEachDataDiskInGB": {
+      "type": "string",
+      "metadata": {
+        "description": "Size of each data disk in GB"
+      }
     }
   },
   "variables": {
     "vmSize": "Standard_D2",
-    "adminUsername": "softnas",
-    "sizeOfEachDataDiskInGB": "5",
     "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'saddiskvm')]",
     "location": "[resourceGroup().location]",
     "addressPrefix": "10.0.0.0/16",
@@ -125,7 +135,7 @@
         },
         "osProfile": {
           "computerName": "[variables('vmName')]",
-          "adminUsername": "[variables('adminUsername')]",
+          "adminUsername": "[parameters('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
         "storageProfile": {
@@ -138,7 +148,7 @@
           "dataDisks": [
             {
               "name": "datadisk1",
-              "diskSizeGB": "[variables('sizeOfEachDataDiskInGB')]",
+              "diskSizeGB": "[parameters('sizeOfEachDataDiskInGB')]",
               "lun": 0,
               "vhd": {
                 "Uri": "[variables('dataDisk1VhdName')]"
@@ -147,7 +157,7 @@
             },
             {
               "name": "datadisk2",
-              "diskSizeGB": "[variables('sizeOfEachDataDiskInGB')]",
+              "diskSizeGB": "[parameters('sizeOfEachDataDiskInGB')]",
               "lun": 1,
               "vhd": {
                 "Uri": "[variables('dataDisk2VhdName')]"
@@ -181,4 +191,5 @@
     }
   ]
 }
+
 
