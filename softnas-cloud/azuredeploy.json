@@ -8,12 +8,6 @@
         "description": "Unique DNS Name for the Storage Account where the Virtual Machine's disks will be placed."
       }
     },
-    "adminUsername": {
-      "type": "string",
-      "metadata": {
-        "description": "Username for the Virtual Machine."
-      }
-    },
     "adminPassword": {
       "type": "securestring",
       "metadata": {
@@ -29,6 +23,7 @@
   },
   "variables": {
     "vmSize": "Standard_D2",
+    "adminUsername": "softnas",
     "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'saddiskvm')]",
     "location": "[resourceGroup().location]",
     "addressPrefix": "10.0.0.0/16",
@@ -36,8 +31,7 @@
     "subnet1Prefix": "10.0.0.0/24",
     "vmStorageAccountContainerName": "vhds",
     "imagePublisher": "SoftNAS",
-    "imageOffer": "softnas-cloud",
-    "imageSKU": "standard_byol",
+    "imageSKU": "SoftNAS Cloud - BYOL",
     "imageVersion": "latest",
     "publicIPAddressName": "myPublicIP",
     "publicIPAddressType": "Dynamic",
@@ -135,14 +129,13 @@
         },
         "osProfile": {
           "computerName": "[variables('vmName')]",
-          "adminUsername": "[parameters('adminUsername')]",
+          "adminUsername": "[variables('adminUsername')]",
           "adminPassword": "[parameters('adminPassword')]"
         },
         "storageProfile": {
           "imageReference": {
             "publisher": "[variables('imagePublisher')]",
             "sku": "[variables('imageSKU')]",
-            "offer": "[variables('imageOffer')]",
             "version": "[variables('imageVersion')]"
           },
           "dataDisks": [
