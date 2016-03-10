@@ -19,8 +19,10 @@
     "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'rhelvm')]",
     "location": "[resourceGroup().location]",
     "dataDisk1VhdName": "datadisk1",
-    "imagePublisher": "SoftNAS",
-    "imageOffer": "standard_byol",
+    "imagePublisher": "softnas",
+    "imageOffer": "softnas-cloud",
+    "imageSKU": "standard_byol",
+    "imageVersion": "3.4.2",
     "OSDiskName": "osdiskforsoftnas",
     "nicName": "myVMNic",
     "addressPrefix": "10.0.0.0/16",
@@ -124,8 +126,9 @@
         "storageProfile": {
           "imageReference": {
             "publisher": "[variables('imagePublisher')]",
-            "sku": "[variables('imageOffer')]",
-            "version": "3.4.4"
+            "offer": "[variables('imageOffer')]",
+            "sku": "[variables('imageSKU')]",
+            "version": "[variables('imageVersion')]"
           },
           "osDisk": {
             "name": "osdisk",
