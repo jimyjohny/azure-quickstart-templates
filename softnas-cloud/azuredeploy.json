@@ -25,9 +25,6 @@
     "subnet1Name": "Subnet-1",
     "subnet1Prefix": "10.0.0.0/24",
     "vmStorageAccountContainerName": "vhds",
-    "plan": "standard_byol",
-    "publisher": "SoftNAS",
-    "product": "softnas-cloud",
     "imagePublisher": "SoftNAS",
     "imageOffer": "softnas-cloud",
     "imageSKU": "standard_byol",
@@ -119,9 +116,9 @@
       "name": "[variables('vmName')]",
       "location": "[variables('location')]",
       "plan": {
-          "name": "[variables('plan')]",
-          "publisher": "[parameters('publisher')]",
-          "product": "[parameters('product')]"
+          "name": "[variables('imageSKU')]",
+          "publisher": "[variables('imagePublisher')]",
+          "product": "[variables('imageOffer')]"
       },
       "dependsOn": [
         "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
