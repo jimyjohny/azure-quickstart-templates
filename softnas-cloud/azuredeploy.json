@@ -31,7 +31,7 @@
     "subnet1Prefix": "10.0.0.0/24",
     "vmStorageAccountContainerName": "vhds",
     "imagePublisher": "SoftNAS",
-    "imageSKU": "SoftNAS Cloud - BYOL",
+    "imageSKU": "standard_byol",
     "imageVersion": "latest",
     "publicIPAddressName": "myPublicIP",
     "publicIPAddressType": "Dynamic",
