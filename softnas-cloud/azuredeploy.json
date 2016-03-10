@@ -129,7 +129,7 @@
       "name": "[variables('vmName')]",
       "location": "[variables('location')]",
       "plan": {
-          "name": "[variables('name')]",
+          "name": "[variables('plan')]",
           "publisher": "[parameters('publisher')]",
           "product": "[parameters('product')]"
       },
