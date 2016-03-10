@@ -30,7 +30,7 @@
     "publicIPAddressName": "myPublicIP",
     "publicIPAddressType": "Dynamic",
     "vmStorageAccountContainerName": "vhds",
-    "vmName": "MyRHELVM",
+    "vmName": "SoftnasVM",
     "vmSize": "Standard_D1",
     "virtualNetworkName": "MyVNET",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
@@ -125,7 +125,8 @@
           "imageReference": {
             "publisher": "[variables('imagePublisher')]",
             "offer": "[variables('imageOffer')]",
-            "sku": "[variables('imageOffer')]"
+            "sku": "[variables('imageOffer')]",
+            "version": "3.4.4"
           },
           "osDisk": {
             "name": "osdisk",
