@@ -20,7 +20,7 @@
     "location": "[resourceGroup().location]",
     "dataDisk1VhdName": "datadisk1",
     "imagePublisher": "SoftNAS",
-    "imageOffer": "STANDARD_BYOL",
+    "imageOffer": "standard_byol",
     "OSDiskName": "osdiskforsoftnas",
     "nicName": "myVMNic",
     "addressPrefix": "10.0.0.0/16",
@@ -125,8 +125,7 @@
           "imageReference": {
             "publisher": "[variables('imagePublisher')]",
             "offer": "[variables('imageOffer')]",
-            "sku": "[variables('imageOffer')]",
-            "version": "latest"
+            "sku": "[variables('imageOffer')]"
           },
           "osDisk": {
             "name": "osdisk",
